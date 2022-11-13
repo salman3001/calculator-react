@@ -1,25 +1,35 @@
 import { HtmlHTMLAttributes, ReactNode, SyntheticEvent, useState } from "react";
-import {historyScreenVal,mainScreenVal,inputType} from "../utils/calculator-utils"
+import {
+  historyScreenVal,
+  mainScreenVal,
+  inputType,
+} from "../utils/calculator-utils";
 
 const Calculator = () => {
   const [mainScreen, setMainScreen] = useState("0");
   const [historyScreen, setHistoryScreen] = useState([""]);
 
   const inputHandler = (e: SyntheticEvent) => {
-   const input = e.currentTarget.innerHTML
-   
-   switch (inputType(input)) {
-    case "isNumber":
-      
-      
-      break;
-   
-    default:
-      break;
-   }
+    const input = e.currentTarget.innerHTML;
 
-  }
+    switch (inputType(input)) {
+      case "isNumber":
+        break;
+      case "isOperator":
+        break;
+      case "isEqual":
+        break;
+      case "isDot":
+        break;
+      case "isClear":
+        break;
+      case "isDelete":
+        break;
 
+      default:
+        break;
+    }
+  };
 
   return (
     <div className="h-screen w-screen bg-base-300 flex justify-center items-center ">
@@ -55,20 +65,22 @@ const Calculator = () => {
             =
           </Button>
         </div>
-      </div >
+      </div>
     </div>
   );
 };
 
 export default Calculator;
 
-
-
-const Button = (prop:HtmlHTMLAttributes<HTMLButtonElement> & {variant?:"equal"})=>{
+const Button = (
+  prop: HtmlHTMLAttributes<HTMLButtonElement> & { variant?: "equal" }
+) => {
   return (
-    <button  {...prop} className={`{btn-outline btn btn-lg rounded-full bg-gray-900 text-white
-      ${prop.variant==="equal"?"row-span-2 h-full":""}
-    `} /> 
-  ) 
-} 
-  
+    <button
+      {...prop}
+      className={`{btn-outline btn btn-lg rounded-full bg-gray-900 text-white
+      ${prop.variant === "equal" ? "row-span-2 h-full" : ""}
+    `}
+    />
+  );
+};
