@@ -4,8 +4,8 @@ export let result = "0";
 export let isResultDisplayed = false;
 
 // funtion which checks the input type
-interface Iintputypt {
-  (inpuy: string):
+interface IinputType {
+  (input: string):
     | "isOperator"
     | "isNumber"
     | "isEqual"
@@ -13,7 +13,7 @@ interface Iintputypt {
     | "isClear"
     | "isDelete";
 }
-export const inputType: Iintputypt = (input) => {
+export const inputType: IinputType = (input) => {
   if (["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"].includes(input)) {
     return "isNumber";
   } else if (["+", "-", "*", "/", "%"].includes(input)) {
@@ -34,8 +34,8 @@ interface IappendNumber {
 }
 
 export const appendNumber: IappendNumber = (input) => {
-  if (mainScreenVal === "0" || isResultDisplayed === true) {
-    mainScreenVal = input;
+  if (mainScreenVal === "0") {
+    mainScreenVal = input;    
     return mainScreenVal;
   } else {
     mainScreenVal += input;
@@ -51,7 +51,7 @@ export const addOperator: IaddOperator = (operator) => {
   if (!(mainScreenVal === "0")) {
     historyScreenVal.push(mainScreenVal);
     historyScreenVal.push(operator);
-    calculate("addOperator");
+    // calculate("addOperator");
     mainScreenVal = result;
     isResultDisplayed = true;
     return [mainScreenVal, historyScreenVal];
@@ -64,17 +64,16 @@ interface Icalculate {
   (caller: "addOperator" | "equal"): void;
 }
 
-const calculate: Icalculate = (caller) => {
+export const calculate: Icalculate = (caller) => {
   if (caller === "addOperator") {
     if (historyScreenVal.length <= 2) {
-      result = historyScreenVal[historyScreenVal.length - 2];
+      result = "0"
     }else{
         let operator=historyScreenVal[historyScreenVal.length-1]
         switch (operator) {
             case "+":
-                let newResult = parseInt(result) +parseInt(historyScreenVal[historyScreenVal.length-2]) 
+                let newResult = parseInt(historyScreenVal[historyScreenVal.length-2]) + parseInt(mainScreenVal)
                 result =newResult.toString()
-                return 
                 break;
         
             default:
