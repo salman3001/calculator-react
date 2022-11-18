@@ -78,7 +78,7 @@ const Button = (
   return (
     <button
       {...prop}
-      className={`{btn-outline btn btn-lg rounded-full bg-gray-900 text-white
+      className={`btn-outline btn btn-lg rounded-full bg-gray-900 text-white
       ${prop.variant === "equal" ? "row-span-2 h-full" : ""}
     `}
     />
