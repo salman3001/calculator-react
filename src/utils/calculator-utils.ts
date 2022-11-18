@@ -1,101 +1,116 @@
-export let mainScreenVal: string = "0"
-export let historyScreenVal: string[] = []
-export let result = 0
-export let currentOperator: undefined | string = undefined
-export let isResultDisplayed = false
 
-// funtion which checks the input type
-interface IinputType {
-  (input: string):
-    | "isOperator"
-    | "isNumber"
-    | "isEqual"
-    | "isDot"
-    | "isClear"
-    | "isDelete"
-}
-export const inputType: IinputType = (input) => {
-  if (["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"].includes(input)) {
-    return "isNumber"
-  } else if (["+", "-", "*", "/", "%"].includes(input)) {
-    return "isOperator"
-  } else if (input === "=") {
-    return "isEqual"
-  } else if (input === ".") {
-    return "isDot"
-  } else if (input === "C") {
-    return "isClear"
-  } else {
-    return "isDelete"
+class CalculatorClass {
+  result: number
+  historyScreen: string[]
+  mainScreen: string
+  isResultDisplayed: boolean
+  constructor() {
+    this.result = 0
+    this.historyScreen = []
+    this.mainScreen = "0"
+    this.isResultDisplayed = true
   }
-}
 
-// function for appwnding numbers on main screen
-
-interface IappendNumber {
-  (input: string): string
-}
-
-export const appendNumber: IappendNumber = (input) => {
-  if (mainScreenVal === "0") {
-    mainScreenVal = input
-    return mainScreenVal
-  } else {
-    mainScreenVal += input
-    return mainScreenVal
+  setHistoryScreen(input: string) {
+    this.historyScreen.push(input)
   }
-}
 
-//function for adding operator
-
-interface IaddOperator {
-  (input: string): [string, string[]]
-}
-
-export const addOperator: IaddOperator = (operator) => {
-  if (!(mainScreenVal === "0")) {
-    historyScreenVal.push(mainScreenVal)
-    historyScreenVal.push(operator)
-    // calculate("addOperator");
-    mainScreenVal = result.toString()
-    isResultDisplayed = true
-    return [mainScreenVal, historyScreenVal]
-  } else {
-    return [mainScreenVal, historyScreenVal]
+  setMainScreen(input: string) {
+    if (this.isResultDisplayed) {
+      this.mainScreen = input
+    }
+    else {
+      this.mainScreen = this.mainScreen+=input
+    }
   }
-}
 
-// funtion to calculate the results
-export const calculate = () => {
-  for (let i = 0; i < historyScreenVal.length; i++) {
-    if (i <= 1) {
-      if (["+", "-", "*", "/", "%"].includes(historyScreenVal[i])) {
-        currentOperator = historyScreenVal[i]
-      } else {
-        result = Number(historyScreenVal[i])
+  calculate = () => {
+    let currentOperator:undefined|string=undefined
+
+    for (let i = 0; i < this.historyScreen.length; i++) {
+      if (i <= 1) {
+        if (["+", "-", "*", "/", "%"].includes(this.historyScreen[i])) {
+          currentOperator = this.historyScreen[i]
+          this.isResultDisplayed=true
+        } else {
+          this.result = Number(this.historyScreen[i])
+          this.isResultDisplayed=true
+        }
       }
-    } else {
-      if (["+", "-", "*", "/", "%"].includes(historyScreenVal[i])) {
-        currentOperator = historyScreenVal[i]
-      } else {
-        switch (currentOperator) {
-          case "+":
-            result += Number(historyScreenVal[i])
-            break
-          case "-":
-            result -= Number(historyScreenVal[i])
-            break
-          case "*":
-            result *= Number(historyScreenVal[i])
-            break
-          case "/":
-            result /= Number(historyScreenVal[i])
-            break
+       else {
+        if (["+", "-", "*", "/", "%"].includes(this.historyScreen[i])) {
+          currentOperator = this.historyScreen[i]
+          this.isResultDisplayed=true
+        }
+        else {
+          switch (currentOperator) {
+            case "+":
+              this.result += Number(this.historyScreen[i])
+              this.isResultDisplayed=true
+              break
+            case "-":
+              this.result -= Number(this.historyScreen[i])
+              this.isResultDisplayed=true
+              break
+            case "*":
+              this.result *= Number(this.historyScreen[i])
+              this.isResultDisplayed=true
+              break
+            case "/":
+              this.result /= Number(this.historyScreen[i])
+              this.isResultDisplayed=true
+              break
 
-          default:
-            break
+            default:
+              break
+          }
         }
       }
     }
   }
+  appendNumber(input:string){
+   this.setMainScreen(input)
+   this.isResultDisplayed=false
+  }
+  addOperator(input:string){
+   this.setHistoryScreen(this.mainScreen)
+   this.setHistoryScreen(input)
+   this.calculate()
+   this.mainScreen=this.result.toString()
+  }
+  addDot(input:string){
+
+    if (!this.mainScreen.includes(".") || this.isResultDisplayed) {
+      this.setMainScreen(input)
+      this.isResultDisplayed=false
+    }else return
+  }
+  clear(){
+    this.mainScreen="0"
+    this.historyScreen=[]
+    this.result=0
+    this.isResultDisplayed=true
+  }
+  equal(){
+    this.historyScreen.push(this.mainScreen)
+    this.calculate()
+    this.historyScreen=[]
+    this.mainScreen=(this.result).toString()
+    this.isResultDisplayed=true
+  }
+  delete(){
+    // code to delete charectors
+    this.isResultDisplayed=false
+  }
+  
 }
+
+
+
+const calculator = new CalculatorClass()
+
+export default calculator
+
+
+
+

@@ -1,9 +1,6 @@
+
 import { HtmlHTMLAttributes, ReactNode, SyntheticEvent, useState } from "react";
-import {
-  historyScreenVal,
-  mainScreenVal,
-  inputType,
-} from "../utils/calculator-utils";
+import calculator from "../utils/calculator-utils";
 
 const Calculator = () => {
   const [mainScreen, setMainScreen] = useState("0");
@@ -11,23 +8,39 @@ const Calculator = () => {
 
   const inputHandler = (e: SyntheticEvent) => {
     const input = e.currentTarget.innerHTML;
+    let key = new window.KeyboardEvent("k",)
+    
+    
+    
+    
 
-    switch (inputType(input)) {
-      case "isNumber":
-        break;
-      case "isOperator":
-        break;
-      case "isEqual":
-        break;
-      case "isDot":
-        break;
-      case "isClear":
-        break;
-      case "isDelete":
-        break;
+    if (["+", "-", "*", "/", "%"].includes(input)) {
+      calculator.addOperator(input)
+      setHistoryScreen([...calculator.historyScreen])
+      setMainScreen(calculator.mainScreen)
+    }
+    else if (["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"].includes(input)) {
+      calculator.appendNumber(input)
+      setMainScreen(calculator.mainScreen)
+    }
+    else if (input === "C") {
+      calculator.clear()
+      setHistoryScreen([...calculator.historyScreen])
+      setMainScreen(calculator.mainScreen)
+    }
+    else if (input === "del") {
 
-      default:
-        break;
+    }
+    else if (input === ".") {
+    calculator.addDot(input)
+    setHistoryScreen([...calculator.historyScreen])
+    setMainScreen(calculator.mainScreen)
+    }
+    else if (input === "=") {
+      calculator.equal()
+      setHistoryScreen([...calculator.historyScreen])
+      setMainScreen(calculator.mainScreen)
+
     }
   };
 
