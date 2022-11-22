@@ -4,4 +4,4 @@
     <li> this a simple react calculator.</li>
     <li>its performs all the common tasks like add, subtract, multiply, divide and percentage.</li>
     <li>You can use it with mouse and keyboard. </li>
-</ul>ss
+</ul>
