@@ -224,4 +224,52 @@ describe('testing equal()',()=>{
  })
 })
 
+describe('Testing percent(0',()=>{
+  beforeEach(()=>{
+  moduleReset()
+  })
+  test('if history screen length is less than 2',()=>{
+    calculator.precent()
+    expect(calculator.historyScreen).toEqual([])
+    expect(calculator.result).toBe(0)
+    expect(calculator.mainScreen).toBe("0")
+    calculator.historyScreen = ["2","+","4"]
+    calculator.precent()
+    expect(calculator.historyScreen).toEqual([])
+    expect(calculator.result).toBe(0)
+    expect(calculator.mainScreen).toBe("0")
+
+  })
+  test('it should add plus percntage',()=>{
+    calculator.historyScreen=["250","+"]
+    calculator.mainScreen="12"
+    calculator.precent()
+    expect(calculator.historyScreen).toEqual([])
+    expect(calculator.result).toBe(280)
+    expect(calculator.mainScreen).toBe("280")
+  })
+})
+
+describe('Testing delete ()',()=>{
+  beforeEach(()=>{
+  moduleReset()
+  })
+
+  test('Its should remove last charector from mainscreen value and set isresult despalyed to false',()=>{
+   calculator.mainScreen="5486156"
+   calculator.isResultDisplayed=true
+   calculator.delete()
+   expect(calculator.mainScreen).toBe("548615")
+   expect(calculator.isResultDisplayed).toBeFalsy
+
+  })
+  test('Its should set mainscreen to 0 if mainscreen have only one charector left and set isresult despalyed to false',()=>{
+    calculator.mainScreen="5"
+    calculator.isResultDisplayed=true
+    calculator.delete()
+    expect(calculator.mainScreen).toBe("0")
+    expect(calculator.isResultDisplayed).toBeFalsy
+ 
+   })
+})
 

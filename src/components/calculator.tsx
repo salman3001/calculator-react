@@ -1,99 +1,156 @@
-
-import { HtmlHTMLAttributes, ReactNode, SyntheticEvent, useState } from "react";
-import calculator from "../utils/calculator-utils";
+import { HtmlHTMLAttributes, SyntheticEvent, useState, useEffect } from "react"
+import calculator from "../utils/calculator-utils"
+import InstructionModal from './InstructionModal';
 
 const Calculator = () => {
-  const [mainScreen, setMainScreen] = useState("0");
-  const [historyScreen, setHistoryScreen] = useState([""]);
+  const [mainScreen, setMainScreen] = useState("0")
+  const [historyScreen, setHistoryScreen] = useState([""])
 
-  const inputHandler = (e: SyntheticEvent) => {
-    const input = e.currentTarget.innerHTML;
-    let key = new window.KeyboardEvent("k",)
-    
-    
-    
-    
+  useEffect(() => {
+    document.addEventListener("keydown", keyboardInputHandler)
+    return () => document.removeEventListener("keydown", keyboardInputHandler)
+  }, [])
 
-    if (["+", "-", "*", "/", "%"].includes(input)) {
+  const keyboardInputHandler = (e: KeyboardEvent) => {
+    const input = e.key
+    // console.log(input);
+
+    const setScreens = () => {
+      setMainScreen(calculator.mainScreen)
+      setHistoryScreen([...calculator.historyScreen])
+    }
+
+    if (["+", "-", "*", "/"].includes(input)) {
       calculator.addOperator(input)
-      setHistoryScreen([...calculator.historyScreen])
-      setMainScreen(calculator.mainScreen)
-    }
-    else if (["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"].includes(input)) {
+      setScreens()
+    } else if (
+      ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"].includes(input)
+    ) {
       calculator.appendNumber(input)
-      setMainScreen(calculator.mainScreen)
-    }
-    else if (input === "C") {
+      setScreens()
+    } else if (input === "Delete") {
       calculator.clear()
-      setHistoryScreen([...calculator.historyScreen])
-      setMainScreen(calculator.mainScreen)
-    }
-    else if (input === "del") {
-
-    }
-    else if (input === ".") {
-    calculator.addDot(input)
-    setHistoryScreen([...calculator.historyScreen])
-    setMainScreen(calculator.mainScreen)
-    }
-    else if (input === "=") {
+      setScreens()
+    } else if (input === "Backspace") {
+      calculator.delete()
+      setScreens()
+    } else if (input === ".") {
+      calculator.addDot(input)
+      setScreens()
+    } else if (input === "Enter") {
       calculator.equal()
-      setHistoryScreen([...calculator.historyScreen])
-      setMainScreen(calculator.mainScreen)
-
+      setScreens()
+    } else if (input === "%") {
+      calculator.precent()
+      setScreens()
+    } else {
+      return
     }
-  };
+  }
+
+  const buttonInputHandler = (e: SyntheticEvent) => {
+    const input = e.currentTarget.innerHTML
+    const setScreens = () => {
+      setMainScreen(calculator.mainScreen)
+      setHistoryScreen([...calculator.historyScreen])
+    }
+
+    if (["+", "-", "*", "/"].includes(input)) {
+      calculator.addOperator(input)
+      setScreens()
+    } else if (
+      ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"].includes(input)
+    ) {
+      calculator.appendNumber(input)
+      setScreens()
+    } else if (input === "C") {
+      calculator.clear()
+      setScreens()
+    } else if (input === "del") {
+      calculator.delete()
+      setScreens()
+    } else if (input === ".") {
+      calculator.addDot(input)
+      setScreens()
+    } else if (input === "=") {
+      calculator.equal()
+      setScreens()
+    } else if (input === "%") {
+      calculator.precent()
+      setScreens()
+    } else {
+      return
+    }
+  }
 
   return (
-    <div className="h-screen w-screen bg-base-300 flex justify-center items-center ">
-      <div className="min-w-[350px] min-h-[500px] flex flex-col justify-center bg-gradient-to-tl from-black to-slate-900 shadow-2xl shadow-gray-700 rounded-l">
-        <div className="p-4 text-white text-xl">
-          <div className="b flex h-10 w-full items-center justify-end border-2 bg-black  px-2">
+    <div className="h-screen w-screen bg-base-300 flex flex-col gap-4 justify-center items-center ">
+      {/* Calculator Container */}
+      <div className="max-w-sm sm:max-w-md flex flex-col justify-center rounded-2xl bg-gradient-to-tl from-black to-slate-900 shadow-2xl shadow-gray-700 ">
+        {/* Screens Container */}
+        <div className="p-4 text-white text-xs">
+          {/* history Screen */}
+          <div className="b flex h-10 w-full items-center justify-end border-2 border-b-0 bg-black  px-2  overflow-ellipsis rounded-t-md">
             {historyScreen}
           </div>
-          <div className="flex h-20 w-full items-center justify-end border-2 border-t-0 bg-black px-2 text-3xl">
+          {/* Main Screen */}
+          <div className="flex h-20 w-full items-center justify-end border-2 border-t-0 bg-black px-2 text-3xl rounded-b-md">
             {mainScreen}
           </div>
         </div>
         <div className="grid grid-rows-5 grid-flow-col place-items-center gap-2 p-2 py-4">
-          <Button onClick={inputHandler}>C</Button>
-          <Button onClick={inputHandler}>7</Button>
-          <Button onClick={inputHandler}>4</Button>
-          <Button onClick={inputHandler}>1</Button>
-          <Button onClick={inputHandler}>%</Button>
-          <Button onClick={inputHandler}>/</Button>
-          <Button onClick={inputHandler}>8</Button>
-          <Button onClick={inputHandler}>5</Button>
-          <Button onClick={inputHandler}>2</Button>
-          <Button onClick={inputHandler}>0</Button>
-          <Button onClick={inputHandler}>*</Button>
-          <Button onClick={inputHandler}>9</Button>
-          <Button onClick={inputHandler}>6</Button>
-          <Button onClick={inputHandler}>3</Button>
-          <Button onClick={inputHandler}>.</Button>
-          <Button onClick={inputHandler}>del</Button>
-          <Button onClick={inputHandler}>-</Button>
-          <Button onClick={inputHandler}>+</Button>
-          <Button onClick={inputHandler} variant="equal">
+          <Button onClick={buttonInputHandler}>C</Button>
+          <Button onClick={buttonInputHandler}>7</Button>
+          <Button onClick={buttonInputHandler}>4</Button>
+          <Button onClick={buttonInputHandler}>1</Button>
+          <Button onClick={buttonInputHandler}>%</Button>
+          <Button onClick={buttonInputHandler}>/</Button>
+          <Button onClick={buttonInputHandler}>8</Button>
+          <Button onClick={buttonInputHandler}>5</Button>
+          <Button onClick={buttonInputHandler}>2</Button>
+          <Button onClick={buttonInputHandler}>0</Button>
+          <Button onClick={buttonInputHandler}>*</Button>
+          <Button onClick={buttonInputHandler}>9</Button>
+          <Button onClick={buttonInputHandler}>6</Button>
+          <Button onClick={buttonInputHandler}>3</Button>
+          <Button onClick={buttonInputHandler}>.</Button>
+          <Button onClick={buttonInputHandler} variant="del">del</Button>
+          <Button onClick={buttonInputHandler}>-</Button>
+          <Button onClick={buttonInputHandler}>+</Button>
+          <Button onClick={buttonInputHandler} variant="equal">
             =
           </Button>
         </div>
       </div>
-    </div>
-  );
-};
+      {/* instruction button */}
+      <InstructionModal/>
+      <p className="text-center">Made By <b className="text-primary">Salman Khan</b>  <br />therodfighter@gmail.com</p>
 
-export default Calculator;
+    </div>
+  )
+}
+
+export default Calculator
 
 const Button = (
-  prop: HtmlHTMLAttributes<HTMLButtonElement> & { variant?: "equal" }
+  prop: HtmlHTMLAttributes<HTMLButtonElement> & { variant?: "equal" | "del" }
 ) => {
   return (
     <button
       {...prop}
       className={`btn-outline btn btn-lg rounded-full bg-gray-900 text-white
-      ${prop.variant === "equal" ? "row-span-2 h-full" : ""}
+      ${
+        prop.variant === "equal"
+          ? "row-span-2 h-full  bg-green-500 hover:bg-green-400  text-white"
+          : ""
+      }
+      ${
+        prop.variant === "del"
+          ? "btn-outline btn btn-lg rounded-full  bg-red-500 hover:bg-red-400  text-white"
+          : ""
+      }
     `}
+    
     />
-  );
-};
+  )
+}
