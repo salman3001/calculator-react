@@ -19,11 +19,13 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "postbuild":"rm -rf ../Portfolio-9-nov-2022/public/calculator &&  mv build ../Portfolio-9-nov-2022/public/calculator",
+    "postbuild": "rm -rf ../Portfolio-9-nov-2022/public/calculator &&  mv build ../Portfolio-9-nov-2022/public/calculator",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
-  "homepage": "http://localhost:3000/calculator",
+  "homepage": "https://salman3001.github.io/calculator-react/",
   "eslintConfig": {
     "extends": [
       "react-app",
