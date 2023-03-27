@@ -1,87 +1,88 @@
-import { HtmlHTMLAttributes, SyntheticEvent, useState, useEffect } from "react"
-import calculator from "../utils/calculator-utils"
-import InstructionModal from './InstructionModal';
+import { HtmlHTMLAttributes, SyntheticEvent, useState, useEffect } from "react";
+import calculator from "../utils/calculator-utils";
+import InstructionModal from "./InstructionModal";
+import { AiFillLinkedin, AiOutlineGithub, AiOutlineMail } from "react-icons/ai";
 
 const Calculator = () => {
-  const [mainScreen, setMainScreen] = useState("0")
-  const [historyScreen, setHistoryScreen] = useState([""])
+  const [mainScreen, setMainScreen] = useState("0");
+  const [historyScreen, setHistoryScreen] = useState([""]);
 
   useEffect(() => {
-    document.addEventListener("keydown", keyboardInputHandler)
-    return () => document.removeEventListener("keydown", keyboardInputHandler)
-  }, [])
+    document.addEventListener("keydown", keyboardInputHandler);
+    return () => document.removeEventListener("keydown", keyboardInputHandler);
+  }, []);
 
   const keyboardInputHandler = (e: KeyboardEvent) => {
-    const input = e.key
+    const input = e.key;
     // console.log(input);
 
     const setScreens = () => {
-      setMainScreen(calculator.mainScreen)
-      setHistoryScreen([...calculator.historyScreen])
-    }
+      setMainScreen(calculator.mainScreen);
+      setHistoryScreen([...calculator.historyScreen]);
+    };
 
     if (["+", "-", "*", "/"].includes(input)) {
-      calculator.addOperator(input)
-      setScreens()
+      calculator.addOperator(input);
+      setScreens();
     } else if (
       ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"].includes(input)
     ) {
-      calculator.appendNumber(input)
-      setScreens()
+      calculator.appendNumber(input);
+      setScreens();
     } else if (input === "Delete") {
-      calculator.clear()
-      setScreens()
+      calculator.clear();
+      setScreens();
     } else if (input === "Backspace") {
-      calculator.delete()
-      setScreens()
+      calculator.delete();
+      setScreens();
     } else if (input === ".") {
-      calculator.addDot(input)
-      setScreens()
+      calculator.addDot(input);
+      setScreens();
     } else if (input === "Enter") {
-      calculator.equal()
-      setScreens()
+      calculator.equal();
+      setScreens();
     } else if (input === "%") {
-      calculator.precent()
-      setScreens()
+      calculator.precent();
+      setScreens();
     } else {
-      return
+      return;
     }
-  }
+  };
 
   const buttonInputHandler = (e: SyntheticEvent) => {
-    const input = e.currentTarget.innerHTML
+    const input = e.currentTarget.innerHTML;
     const setScreens = () => {
-      setMainScreen(calculator.mainScreen)
-      setHistoryScreen([...calculator.historyScreen])
-    }
+      setMainScreen(calculator.mainScreen);
+      setHistoryScreen([...calculator.historyScreen]);
+    };
 
     if (["+", "-", "*", "/"].includes(input)) {
-      calculator.addOperator(input)
-      setScreens()
+      calculator.addOperator(input);
+      setScreens();
     } else if (
       ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"].includes(input)
     ) {
-      calculator.appendNumber(input)
-      setScreens()
+      calculator.appendNumber(input);
+      setScreens();
     } else if (input === "C") {
-      calculator.clear()
-      setScreens()
+      calculator.clear();
+      setScreens();
     } else if (input === "del") {
-      calculator.delete()
-      setScreens()
+      calculator.delete();
+      setScreens();
     } else if (input === ".") {
-      calculator.addDot(input)
-      setScreens()
+      calculator.addDot(input);
+      setScreens();
     } else if (input === "=") {
-      calculator.equal()
-      setScreens()
+      calculator.equal();
+      setScreens();
     } else if (input === "%") {
-      calculator.precent()
-      setScreens()
+      calculator.precent();
+      setScreens();
     } else {
-      return
+      return;
     }
-  }
+  };
 
   return (
     <div className="h-screen w-screen bg-base-300 flex flex-col gap-4 justify-center items-center ">
@@ -114,7 +115,9 @@ const Calculator = () => {
           <Button onClick={buttonInputHandler}>6</Button>
           <Button onClick={buttonInputHandler}>3</Button>
           <Button onClick={buttonInputHandler}>.</Button>
-          <Button onClick={buttonInputHandler} variant="del">del</Button>
+          <Button onClick={buttonInputHandler} variant="del">
+            del
+          </Button>
           <Button onClick={buttonInputHandler}>-</Button>
           <Button onClick={buttonInputHandler}>+</Button>
           <Button onClick={buttonInputHandler} variant="equal">
@@ -123,14 +126,43 @@ const Calculator = () => {
         </div>
       </div>
       {/* instruction button */}
-      <InstructionModal/>
-      <p className="text-center">Made By <b className="text-primary">Salman Khan</b>  <br />therodfighter@gmail.com</p>
-
+      <InstructionModal />
+      <p className="text-center flex flex-col">
+        <div>
+          Made By <b className="text-primary">Salman Khan</b>
+        </div>
+        <br />
+        Lets connect
+        {/* contacts */}
+        <div className="flex text-4xl gap-4 justify-center items-center ">
+          <a
+            href="mailto:therodfighter@gmail.com"
+            target="_blank"
+            className="group "
+          >
+            <AiOutlineMail className="group-hover:text-primary transition-colors" />
+          </a>
+          <a
+            href="https://www.linkedin.com/in/salman-k-b922a2144/"
+            target="_blank"
+            className="group"
+          >
+            <AiFillLinkedin className="group-hover:text-primary transition-colors" />
+          </a>
+          <a
+            href="https://github.com/salman3001/"
+            target="_blank"
+            className="group"
+          >
+            <AiOutlineGithub className="group-hover:text-primary transition-colors" />
+          </a>
+        </div>
+      </p>
     </div>
-  )
-}
+  );
+};
 
-export default Calculator
+export default Calculator;
 
 const Button = (
   prop: HtmlHTMLAttributes<HTMLButtonElement> & { variant?: "equal" | "del" }
@@ -150,7 +182,6 @@ const Button = (
           : ""
       }
     `}
-    
     />
-  )
-}
+  );
+};
